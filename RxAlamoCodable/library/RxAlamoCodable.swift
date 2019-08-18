@@ -7,48 +7,48 @@ import Alamofire
 import Foundation
 import RxSwift
 
-class RxAlamoCodable {
+public class RxAlamoCodable {
 
     private let baseURL: String;
-    var headers: HTTPHeaders? = nil
+    public var headers: HTTPHeaders? = nil
 
-    init(_ baseURL: String) {
+    public init(_ baseURL: String) {
         self.baseURL = baseURL
     }
 
-    func get<T: Decodable>(_ path: String) -> Single<T> {
+    public func get<T: Decodable>(_ path: String) -> Single<T> {
         return AF.request("\(self.baseURL)\(path)", headers: headers).rxValue()
     }
 
-    func get(_ path: String) -> Completable {
+    public func get(_ path: String) -> Completable {
         return AF.request("\(self.baseURL)\(path)", headers: headers).rxCompletable()
     }
 
-    func delete(_ path: String) -> Completable {
+    public func delete(_ path: String) -> Completable {
         return AF.request("\(self.baseURL)\(path)", method: .delete, headers: headers).rxCompletable()
     }
 
-    func post<T: Decodable>(_ path: String, body: Encodable? = nil) -> Single<T> {
+    public func post<T: Decodable>(_ path: String, body: Encodable? = nil) -> Single<T> {
         return jsonValueRequest(path, .post, body)
     }
 
-    func post(_ path: String, body: Encodable? = nil) -> Completable {
+    public func post(_ path: String, body: Encodable? = nil) -> Completable {
         return jsonCompletableRequest(path, .post, body)
     }
 
-    func put<T: Decodable>(_ path: String, body: Encodable? = nil) -> Single<T> {
+    public func put<T: Decodable>(_ path: String, body: Encodable? = nil) -> Single<T> {
         return jsonValueRequest(path, .put, body)
     }
 
-    func put(_ path: String, body: Encodable? = nil) -> Completable {
+    public func put(_ path: String, body: Encodable? = nil) -> Completable {
         return jsonCompletableRequest(path, .put, body)
     }
 
-    func patch<T: Decodable>(_ path: String, body: Encodable? = nil) -> Single<T> {
+    public func patch<T: Decodable>(_ path: String, body: Encodable? = nil) -> Single<T> {
         return jsonValueRequest(path, .patch, body)
     }
 
-    func patch(_ path: String, body: Encodable? = nil) -> Completable {
+    public func patch(_ path: String, body: Encodable? = nil) -> Completable {
         return jsonCompletableRequest(path, .patch, body)
     }
 

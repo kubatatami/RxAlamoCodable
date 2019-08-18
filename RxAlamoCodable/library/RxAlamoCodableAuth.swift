@@ -10,12 +10,12 @@ class RxAlamoCodableAuth {
 
     private var logoutSubject: PublishSubject<Void>!
     private(set) var authInterceptor: Observable<Void>
-    var logout: Observable<Void> {
+    public var logout: Observable<Void> {
         return logoutSubject.asObservable()
     }
     let isAuthError: (Int, Data?) -> Bool
 
-    init (authInterceptor: Observable<Void>, isAuthError: @escaping (Int, Data?) -> Bool = { code, _ in code == 401 }) {
+    public init (authInterceptor: Observable<Void>, isAuthError: @escaping (Int, Data?) -> Bool = { code, _ in code == 401 }) {
         let logoutSubject = PublishSubject<Void>()
         self.authInterceptor = authInterceptor.share().do(onError: {error in
             if case let RxAlamoCodableError.httpError(code, data) = error, isAuthError(code, data) {
@@ -28,7 +28,7 @@ class RxAlamoCodableAuth {
 }
 
 extension Single {
-    func auth(_ auth: RxAlamoCodableAuth) -> PrimitiveSequence<Trait, Element> {
+    public func auth(_ auth: RxAlamoCodableAuth) -> PrimitiveSequence<Trait, Element> {
         return self.retryWhen { observable in
             observable.flatMap { error -> Observable<Void> in
                 if case let RxAlamoCodableError.httpError(code, data) = error, auth.isAuthError(code, data) {

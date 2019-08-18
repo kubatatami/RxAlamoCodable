@@ -67,8 +67,8 @@ public class RxAlamoCodable {
 
 extension DataRequest {
     func rxValue<T: Decodable>() -> Single<T> {
-        return Single<T>.create { [weak self] observer in
-            self!.responseJSON { response in
+        return Single<T>.create { observer in
+            self.responseJSON { response in
                 if let _ = response.error {
                     observer(.error(RxAlamoCodableError.networkError))
                 } else if let http = response.response, http.statusCode >= 400 {
@@ -85,14 +85,14 @@ extension DataRequest {
                 }
             }
             return Disposables.create {
-                self?.cancel()
+                self.cancel()
             }
         }
     }
 
     func rxCompletable() -> Completable {
-        return Completable.create { [weak self] observer in
-            self!.response { response in
+        return Completable.create { observer in
+            self.response { response in
                 if let _ = response.error {
                     observer(.error(RxAlamoCodableError.networkError))
                 } else if let http = response.response, http.statusCode >= 400 {
@@ -102,7 +102,7 @@ extension DataRequest {
                 }
             }
             return Disposables.create {
-                self?.cancel()
+                self.cancel()
             }
         }
     }

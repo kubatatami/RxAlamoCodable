@@ -75,10 +75,15 @@ extension DataRequest {
                     } else {
                         observer(.error(RxAlamoCodableError.networkError))
                     }
-                } else if let data = response.data, let object = try? JSONDecoder().decode(T.self, from: data) {
-                    observer(.success(object))
+                } else if let data = response.data {
+                    do {
+                        let object = try JSONDecoder().decode(T.self, from: data)
+                        observer(.success(object))
+                    } catch {
+                        observer(.error(RxAlamoCodableError.parseError(error: error)))
+                    }
                 } else {
-                    observer(.error(RxAlamoCodableError.parseError))
+                    observer(.error(RxAlamoCodableError.emptyResponse))
                 }
             }
             return Disposables.create {
@@ -110,7 +115,8 @@ extension DataRequest {
 enum RxAlamoCodableError: Error {
     case httpError(code: Int, data: Data?)
     case networkError
-    case parseError
+    case parseError(error: Error)
+    case emptyResponse
 }
 
 extension Encodable {

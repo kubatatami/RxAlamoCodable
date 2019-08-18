@@ -16,7 +16,7 @@ Pod::Spec.new do |spec|
   #
 
   spec.name         = "RxAlamoCodable"
-  spec.version      = "0.0.6"
+  spec.version      = "0.0.7"
   spec.summary      = "RxSwift + Alamofire + Codable"
 
   spec.swift_version = "5.0"

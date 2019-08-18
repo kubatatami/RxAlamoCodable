@@ -112,7 +112,7 @@ extension DataRequest {
     }
 }
 
-enum RxAlamoCodableError: Error {
+public enum RxAlamoCodableError: Error {
     case httpError(code: Int, data: Data?)
     case networkError
     case parseError(error: Error)

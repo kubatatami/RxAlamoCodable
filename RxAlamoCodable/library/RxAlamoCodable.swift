@@ -78,7 +78,7 @@ extension DataRequest {
                         let object = try JSONDecoder().decode(T.self, from: data)
                         observer(.success(object))
                     } catch {
-                        observer(.error(RxAlamoCodableError.parseError(error: error)))
+                        observer(.error(RxAlamoCodableError.parseError(error: error, data: data)))
                     }
                 } else {
                     observer(.error(RxAlamoCodableError.emptyResponse))
@@ -111,7 +111,7 @@ extension DataRequest {
 public enum RxAlamoCodableError: Error {
     case httpError(code: Int, data: Data?)
     case networkError
-    case parseError(error: Error)
+    case parseError(error: Error, data: Data)
     case emptyResponse
 }
 

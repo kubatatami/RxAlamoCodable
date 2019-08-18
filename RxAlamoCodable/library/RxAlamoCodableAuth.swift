@@ -6,7 +6,7 @@
 import Foundation
 import RxSwift
 
-class RxAlamoCodableAuth {
+public class RxAlamoCodableAuth {
 
     private var logoutSubject: PublishSubject<Void>!
     private(set) var authInterceptor: Observable<Void>

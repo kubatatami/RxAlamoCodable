@@ -70,11 +70,9 @@ extension DataRequest {
         return Single<T>.create { [weak self] observer in
             self!.responseJSON { response in
                 if let _ = response.error {
-                    if let http = response.response {
-                        observer(.error(RxAlamoCodableError.httpError(code: http.statusCode, data: response.data)))
-                    } else {
-                        observer(.error(RxAlamoCodableError.networkError))
-                    }
+                    observer(.error(RxAlamoCodableError.networkError))
+                } else if let http = response.response, http.statusCode >= 400 {
+                    observer(.error(RxAlamoCodableError.httpError(code: http.statusCode, data: response.data)))
                 } else if let data = response.data {
                     do {
                         let object = try JSONDecoder().decode(T.self, from: data)
@@ -96,11 +94,9 @@ extension DataRequest {
         return Completable.create { [weak self] observer in
             self!.response { response in
                 if let _ = response.error {
-                    if let http = response.response {
-                        observer(.error(RxAlamoCodableError.httpError(code: http.statusCode, data: response.data)))
-                    } else {
-                        observer(.error(RxAlamoCodableError.networkError))
-                    }
+                    observer(.error(RxAlamoCodableError.networkError))
+                } else if let http = response.response, http.statusCode >= 400 {
+                    observer(.error(RxAlamoCodableError.httpError(code: http.statusCode, data: response.data)))
                 } else {
                     observer(.completed)
                 }

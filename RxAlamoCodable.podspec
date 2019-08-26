@@ -16,7 +16,7 @@ Pod::Spec.new do |spec|
   #
 
   spec.name         = "RxAlamoCodable"
-  spec.version      = "0.0.7"
+  spec.version      = "0.0.7-swift4"
   spec.summary      = "RxSwift + Alamofire + Codable"
 
   spec.swift_version = "5.0"
@@ -132,6 +132,6 @@ Pod::Spec.new do |spec|
   # spec.requires_arc = true
 
   # spec.xcconfig = { "HEADER_SEARCH_PATHS" => "$(SDKROOT)/usr/include/libxml2" }
-  spec.dependency "RxSwift", "~> 5.0.0"
-  spec.dependency "Alamofire", "~> 5.0.0-beta.5"
+  spec.dependency "RxSwift", "~> 4.5.0"
+  spec.dependency "Alamofire", "~> 4.8.0"
 end

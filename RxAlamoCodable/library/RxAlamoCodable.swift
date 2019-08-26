@@ -17,15 +17,15 @@ public class RxAlamoCodable {
     }
 
     public func get<T: Decodable>(_ path: String) -> Single<T> {
-        return Single.deferred { [unowned self] in AF.request("\(self.baseURL)\(path)", headers: self.headers).rxValue() }
+        return Single.deferred { [unowned self] in Alamofire.request("\(self.baseURL)\(path)", headers: self.headers).rxValue() }
     }
 
     public func get(_ path: String) -> Completable {
-        return Completable.deferred { [unowned self] in AF.request("\(self.baseURL)\(path)", headers: self.headers).rxCompletable() }
+        return Completable.deferred { [unowned self] in Alamofire.request("\(self.baseURL)\(path)", headers: self.headers).rxCompletable() }
     }
 
     public func delete(_ path: String) -> Completable {
-        return Completable.deferred { [unowned self] in AF.request("\(self.baseURL)\(path)", method: .delete, headers: self.headers).rxCompletable() }
+        return Completable.deferred { [unowned self] in Alamofire.request("\(self.baseURL)\(path)", method: .delete, headers: self.headers).rxCompletable() }
     }
 
     public func post<T: Decodable>(_ path: String, body: Encodable? = nil) -> Single<T> {
@@ -54,13 +54,13 @@ public class RxAlamoCodable {
 
     private func jsonValueRequest<T: Decodable>(_ path: String, _ method: HTTPMethod, _ body: Encodable? = nil) -> Single<T> {
         return body.asRxDictionary().flatMap { [unowned self] params in
-            AF.request("\(self.baseURL)\(path)", method: method, parameters: params, encoding: JSONEncoding.default, headers: self.headers).rxValue()
+            Alamofire.request("\(self.baseURL)\(path)", method: method, parameters: params, encoding: JSONEncoding.default, headers: self.headers).rxValue()
         }
     }
 
     private func jsonCompletableRequest(_ path: String, _ method: HTTPMethod, _ body: Encodable? = nil) -> Completable {
         return body.asRxDictionary().flatMapCompletable { [unowned self] params in
-            AF.request("\(self.baseURL)\(path)", method: method, parameters: params, encoding: JSONEncoding.default, headers: self.headers).rxCompletable()
+            Alamofire.request("\(self.baseURL)\(path)", method: method, parameters: params, encoding: JSONEncoding.default, headers: self.headers).rxCompletable()
         }
     }
 }

@@ -14,6 +14,10 @@ class API {
         return api.get("todos/1")
     }
 
+    func posts() -> Single<Array<JSONAny>> {
+        return api.get("posts")
+    }
+
     func createTodo(_ todo: TODO) -> Completable {
         return api.post("todos", body: todo)
     }

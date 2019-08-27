@@ -19,7 +19,7 @@ public class RxAlamoCodable {
         self.manager = manager
     }
 
-    public func get<T: Decodable>(_ path: String) -> Single<T> {
+    public func get<T: Decodable>(_ path: String, type: T.Type = T.self) -> Single<T> {
         return Single.deferred { [unowned self] in self.manager.request("\(self.baseURL)\(path)", headers: self.headers).rxValue() }
     }
 
@@ -31,7 +31,7 @@ public class RxAlamoCodable {
         return Completable.deferred { [unowned self] in self.manager.request("\(self.baseURL)\(path)", method: .delete, headers: self.headers).rxCompletable() }
     }
 
-    public func post<T: Decodable>(_ path: String, body: Encodable? = nil) -> Single<T> {
+    public func post<T: Decodable>(_ path: String, body: Encodable? = nil, type: T.Type = T.self) -> Single<T> {
         return jsonValueRequest(path, .post, body)
     }
 
@@ -39,7 +39,7 @@ public class RxAlamoCodable {
         return jsonCompletableRequest(path, .post, body)
     }
 
-    public func put<T: Decodable>(_ path: String, body: Encodable? = nil) -> Single<T> {
+    public func put<T: Decodable>(_ path: String, body: Encodable? = nil, type: T.Type = T.self) -> Single<T> {
         return jsonValueRequest(path, .put, body)
     }
 
@@ -47,7 +47,7 @@ public class RxAlamoCodable {
         return jsonCompletableRequest(path, .put, body)
     }
 
-    public func patch<T: Decodable>(_ path: String, body: Encodable? = nil) -> Single<T> {
+    public func patch<T: Decodable>(_ path: String, body: Encodable? = nil, type: T.Type = T.self) -> Single<T> {
         return jsonValueRequest(path, .patch, body)
     }
 

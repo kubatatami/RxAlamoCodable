@@ -20,6 +20,10 @@ class ViewController: UIViewController {
             print(todo)
         }).disposed(by: disposeBag)
 
+        api.todoTitle().subscribe(onSuccess: { todo in
+            print(todo)
+        }).disposed(by: disposeBag)
+
         api.posts().subscribe(onSuccess: { todo in
             todo.forEach {
                 print($0.toJsonString())

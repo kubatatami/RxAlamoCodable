@@ -14,6 +14,10 @@ class API {
         return api.get("todos/1")
     }
 
+    func todoTitle() -> Single<String> {
+        return api.get("todos/1", type: TODO.self).map { $0.title }
+    }
+
     func posts() -> Single<Array<JSONAny>> {
         return api.get("posts")
     }

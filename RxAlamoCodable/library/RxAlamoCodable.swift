@@ -11,6 +11,7 @@ public class RxAlamoCodable {
 
     private let baseURL: String;
     private let manager: Alamofire.SessionManager
+    private let encoder = JSONEncoder()
 
     public var headers: HTTPHeaders? = nil
 
@@ -56,15 +57,26 @@ public class RxAlamoCodable {
     }
 
     private func jsonValueRequest<T: Decodable>(_ path: String, _ method: HTTPMethod, _ body: Encodable? = nil) -> Single<T> {
-        return body.asRxDictionary().flatMap { [unowned self] params in
-            self.manager.request("\(self.baseURL)\(path)", method: method, parameters: params, encoding: JSONEncoding.default, headers: self.headers).rxValue()
+        return body.asRxData(encoder).flatMap { [unowned self] data in
+            let request = self.createJsonBodyRequest(path: path, method: method, data: data)
+            return self.manager.request(request).rxValue()
         }
     }
 
     private func jsonCompletableRequest(_ path: String, _ method: HTTPMethod, _ body: Encodable? = nil) -> Completable {
-        return body.asRxDictionary().flatMapCompletable { [unowned self] params in
-            self.manager.request("\(self.baseURL)\(path)", method: method, parameters: params, encoding: JSONEncoding.default, headers: self.headers).rxCompletable()
+        return body.asRxData(encoder).flatMapCompletable { [unowned self] data in
+            let request = self.createJsonBodyRequest(path: path, method: method, data: data)
+            return self.manager.request(request).rxCompletable()
         }
+    }
+
+    private func createJsonBodyRequest(path: String, method: HTTPMethod, data: Data?) -> URLRequest {
+        var request = URLRequest(url: URL(string: "\(self.baseURL)\(path)")!)
+        request.httpMethod = method.rawValue
+        request.httpBody = data
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        self.headers?.forEach { request.addValue($0.key, forHTTPHeaderField: $0.value) }
+        return request
     }
 }
 
@@ -119,19 +131,15 @@ public enum RxAlamoCodableError: Error {
 }
 
 extension Encodable {
-    func asDictionary() throws -> [String: Any] {
-        let data = try JSONEncoder().encode(self)
-        guard let dictionary = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any] else {
-            throw NSError()
-        }
-        return dictionary
+    func asData(_ encoder: JSONEncoder) throws -> Data {
+        return try encoder.encode(self)
     }
 }
 
 extension Optional where Wrapped == Encodable {
-    func asRxDictionary() -> Single<[String: Any]?> {
+    func asRxData(_ encoder: JSONEncoder) -> Single<Data?> {
         return Single.deferred {
-            Single.just(try self?.asDictionary())
+            Single.just(try self?.asData(encoder))
         }
     }
 }

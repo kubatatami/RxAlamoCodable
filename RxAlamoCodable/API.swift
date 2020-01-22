@@ -11,21 +11,24 @@ class API {
     private let api = RxAlamoCodable("https://jsonplaceholder.typicode.com/")
 
     func todo() -> Single<TODO> {
-        return api.get("todos/1")
+        api.get("todos/1")
+    }
+
+    func todoFullResponse() -> Single<RxAlamoResult<TODO>> {
+        api.get("todos/1")
     }
 
     func todoTitle() -> Single<String> {
-        return api.get("todos/1", type: TODO.self).map { $0.title }
+        api.get("todos/1", type: TODO.self).map { $0.title }
     }
 
     func posts() -> Single<Array<JSONAny>> {
-        return api.get("posts")
+        api.get("posts")
     }
 
     func createTodo(_ todo: TODO) -> Completable {
-        return api.post("todos", body: todo)
+        api.post("todos", body: todo)
     }
-
 }
 
 struct TODO: Codable {

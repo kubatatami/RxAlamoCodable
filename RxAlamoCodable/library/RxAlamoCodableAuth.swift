@@ -11,7 +11,7 @@ public class RxAlamoCodableAuth {
     private var logoutSubject: PublishSubject<Void>!
     private(set) var authInterceptor: Observable<Void>
     public var logout: Observable<Void> {
-        return logoutSubject.asObservable()
+        logoutSubject.asObservable()
     }
     let isAuthError: (Int, Data?) -> Bool
 
@@ -29,7 +29,7 @@ public class RxAlamoCodableAuth {
 
 extension Single {
     public func auth(_ auth: RxAlamoCodableAuth) -> PrimitiveSequence<Trait, Element> {
-        return self.retryWhen { observable in
+        self.retryWhen { observable in
             observable.flatMap { error -> Observable<Void> in
                 if case let RxAlamoCodableError.httpError(code, data) = error, auth.isAuthError(code, data) {
                     return auth.authInterceptor

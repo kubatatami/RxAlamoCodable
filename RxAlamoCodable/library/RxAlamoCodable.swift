@@ -228,8 +228,8 @@ extension Optional where Wrapped == Encodable {
 }
 
 public class RxAlamoResult<T: Decodable> {
-    let response: DataResponse<Any>
-    let data: T
+    public let response: DataResponse<Any>
+    public let data: T
 
     init(_ response: DataResponse<Any>, _ data: T) {
         self.response = response

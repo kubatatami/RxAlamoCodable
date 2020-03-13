@@ -18,32 +18,32 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         api.todo().subscribe(onSuccess: { todo in
-//            print(todo)
+            print(todo)
         }).disposed(by: disposeBag)
 
         api.todoFullResponse().subscribe(onSuccess: { response in
-//            print(response.response.response?.allHeaderFields)
-//            print(response.data)
+            print(response.response.response?.allHeaderFields)
+            print(response.data)
         }).disposed(by: disposeBag)
 
         api.todoTitle().subscribe(onSuccess: { todo in
-//            print(todo)
+            print(todo)
         }).disposed(by: disposeBag)
 
         api.posts().subscribe(onSuccess: { todo in
-//            todo.forEach {
-//                print($0.toJsonString())
-//            }
+            todo.forEach {
+                print($0.toJsonString())
+            }
         }).disposed(by: disposeBag)
 
         api.createTodo(TODO(userId: 1, title: "wewecwe", completed: false))
             .subscribe(onCompleted: {
-//                print("onCompleted")
+                print("onCompleted")
             }).disposed(by: disposeBag)
 
         formApi.example(parameter1: "wewecwe", parameter2: 1234)
             .subscribe(onSuccess: { response in
-//                print(response.message)
+                print(response.message)
             }).disposed(by: disposeBag)
     }
 }

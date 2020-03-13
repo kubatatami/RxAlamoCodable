@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6A23E1E9770B84B5EBB4C0BD /* RxAlamoCodableLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A23EEB66FE05AC9D1D93613 /* RxAlamoCodableLogger.swift */; };
 		6A23E542C6A76FCFAA6944ED /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A23EB9575A279BD6101DC73 /* API.swift */; };
 		6A23E5B6F6344D30FC41B7F1 /* RxAlamoCodableAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A23E0F2B56851D0DEB407F5 /* RxAlamoCodableAuth.swift */; };
 		6A23E87AC3A1A1617FAA1E4B /* FormAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A23E2A4E116CC205498C88F /* FormAPI.swift */; };
@@ -30,6 +31,7 @@
 		6A23E7E41A1C6C61AD893AC0 /* JSONAny.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONAny.swift; sourceTree = "<group>"; };
 		6A23EB9575A279BD6101DC73 /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		6A23EE4594F181F06E20DEE2 /* Optional.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Optional.swift; sourceTree = "<group>"; };
+		6A23EEB66FE05AC9D1D93613 /* RxAlamoCodableLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RxAlamoCodableLogger.swift; sourceTree = "<group>"; };
 		D4ACC79B230941B800316A03 /* RxAlamoCodable.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RxAlamoCodable.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4ACC79E230941B800316A03 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D4ACC7A0230941B800316A03 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -101,6 +103,7 @@
 				6A23E0F2B56851D0DEB407F5 /* RxAlamoCodableAuth.swift */,
 				6A23EE4594F181F06E20DEE2 /* Optional.swift */,
 				6A23E7E41A1C6C61AD893AC0 /* JSONAny.swift */,
+				6A23EEB66FE05AC9D1D93613 /* RxAlamoCodableLogger.swift */,
 			);
 			path = library;
 			sourceTree = "<group>";
@@ -238,6 +241,7 @@
 				6A23ECA5B37DAE945B65805A /* Optional.swift in Sources */,
 				6A23E8913C2921B3908D7CCE /* JSONAny.swift in Sources */,
 				6A23E87AC3A1A1617FAA1E4B /* FormAPI.swift in Sources */,
+				6A23E1E9770B84B5EBB4C0BD /* RxAlamoCodableLogger.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -8,7 +8,10 @@ import RxSwift
 
 class API {
 
-    private let api = RxAlamoCodable("https://jsonplaceholder.typicode.com/")
+    private let api = RxAlamoCodable(
+        "https://jsonplaceholder.typicode.com/", 
+        logger: DefaultRxAlamoCodableLogger(logHeaders: false, logBody: true, logNetworkErrors: true)
+    )
 
     func todo() -> Single<TODO> {
         api.get("todos/1")

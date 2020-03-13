@@ -13,19 +13,25 @@ public class RxAlamoCodable {
     private let manager: Alamofire.SessionManager
     private let encoder = JSONEncoder()
 
+    public var logger: RxAlamoCodableLogger?
     public var headers: HTTPHeaders? = nil
 
-    public init(_ baseURL: String, manager: Alamofire.SessionManager = Alamofire.SessionManager.default) {
+    public init(_ baseURL: String, manager: Alamofire.SessionManager = Alamofire.SessionManager.default, logger: RxAlamoCodableLogger? = nil) {
         self.baseURL = baseURL
         self.manager = manager
+        self.logger = logger
     }
 
     public func get<T: Decodable>(_ path: String, type: T.Type = T.self) -> Single<T> {
-        Single.deferred { [unowned self] in self.manager.request(self.createUrl(path), headers: self.headers).rxValue() }
+        Single.deferred { [unowned self] in
+            self.request(path, method: .get).rxValue(self.logger)
+        }
     }
 
     public func get<T: RxAlamoResult<Z>, Z: Decodable>(_ path: String, type: T.Type = T.self) -> Single<RxAlamoResult<Z>> {
-        Single.deferred { [unowned self] in self.manager.request(self.createUrl(path), headers: self.headers).rxResult() }
+        Single.deferred { [unowned self] in
+            self.request(path, method: .get).rxResult(self.logger)
+        }
     }
 
     private func createUrl(_ path: String) -> String {
@@ -33,11 +39,15 @@ public class RxAlamoCodable {
     }
 
     public func get(_ path: String) -> Completable {
-        Completable.deferred { [unowned self] in self.manager.request(self.createUrl(path), headers: self.headers).rxCompletable() }
+        Completable.deferred { [unowned self] in
+            self.request(path, method: .get).rxCompletable(self.logger)
+        }
     }
 
     public func delete(_ path: String) -> Completable {
-        Completable.deferred { [unowned self] in self.manager.request(self.createUrl(path), method: .delete, headers: self.headers).rxCompletable() }
+        Completable.deferred { [unowned self] in
+            self.request(path, method: .delete).rxCompletable(self.logger)
+        }
     }
 
     public func post<T: Decodable>(_ path: String, body: Encodable? = nil, type: T.Type = T.self) -> Single<T> {
@@ -53,15 +63,21 @@ public class RxAlamoCodable {
     }
 
     public func post<T: Decodable>(_ path: String, parameters: Parameters?, encoding: ParameterEncoding) -> Single<T> {
-        Single.deferred { self.manager.request(self.createUrl(path), method: .post, parameters: parameters, encoding: encoding, headers: self.headers).rxValue() }
+        Single.deferred { [unowned self] in
+            self.request(path, method: .post, parameters: parameters, encoding: encoding).rxValue(self.logger)
+        }
     }
 
     public func post<T: RxAlamoResult<Z>, Z: Decodable>(_ path: String, parameters: Parameters?, encoding: ParameterEncoding) -> Single<RxAlamoResult<Z>> {
-        Single.deferred { self.manager.request(self.createUrl(path), method: .post, parameters: parameters, encoding: encoding, headers: self.headers).rxResult() }
+        Single.deferred { [unowned self] in
+            self.request(path, method: .post, parameters: parameters, encoding: encoding).rxResult(self.logger)
+        }
     }
 
     public func post(_ path: String, parameters: Parameters?, encoding: ParameterEncoding) -> Completable {
-        Completable.deferred { self.manager.request(self.createUrl(path), method: .post, parameters: parameters, encoding: encoding, headers: self.headers).rxCompletable() }
+        Completable.deferred { [unowned self] in
+            self.request(path, method: .post, parameters: parameters, encoding: encoding).rxCompletable(self.logger)
+        }
     }
 
     public func put<T: Decodable>(_ path: String, body: Encodable? = nil, type: T.Type = T.self) -> Single<T> {
@@ -77,15 +93,21 @@ public class RxAlamoCodable {
     }
 
     public func put<T: Decodable>(_ path: String, parameters: Parameters?, encoding: ParameterEncoding) -> Single<T> {
-        Single.deferred { self.manager.request(self.createUrl(path), method: .put, parameters: parameters, encoding: encoding, headers: self.headers).rxValue() }
+        Single.deferred { [unowned self] in
+            self.request(path, method: .put, parameters: parameters, encoding: encoding).rxValue(self.logger)
+        }
     }
 
     public func put<T: RxAlamoResult<Z>, Z: Decodable>(_ path: String, parameters: Parameters?, encoding: ParameterEncoding) -> Single<RxAlamoResult<Z>> {
-        Single.deferred { self.manager.request(self.createUrl(path), method: .put, parameters: parameters, encoding: encoding, headers: self.headers).rxResult() }
+        Single.deferred { [unowned self] in
+            self.request(path, method: .put, parameters: parameters, encoding: encoding).rxResult(self.logger)
+        }
     }
 
     public func put(_ path: String, parameters: Parameters?, encoding: ParameterEncoding) -> Completable {
-        Completable.deferred { self.manager.request(self.createUrl(path), method: .put, parameters: parameters, encoding: encoding, headers: self.headers).rxCompletable() }
+        Completable.deferred { [unowned self] in
+            self.request(path, method: .put, parameters: parameters, encoding: encoding).rxCompletable(self.logger)
+        }
     }
 
     public func patch<T: Decodable>(_ path: String, body: Encodable? = nil, type: T.Type = T.self) -> Single<T> {
@@ -101,31 +123,38 @@ public class RxAlamoCodable {
     }
 
     public func patch<T: RxAlamoResult<Z>, Z: Decodable>(_ path: String, parameters: Parameters?, encoding: ParameterEncoding) -> Single<RxAlamoResult<Z>> {
-        Single.deferred { self.manager.request(self.createUrl(path), method: .patch, parameters: parameters, encoding: encoding, headers: self.headers).rxResult() }
+        Single.deferred { [unowned self] in
+            self.request(path, method: .patch, parameters: parameters, encoding: encoding).rxResult(self.logger)
+        }
     }
 
     public func patch(_ path: String, parameters: Parameters?, encoding: ParameterEncoding) -> Completable {
-        Completable.deferred { self.manager.request(self.createUrl(path), method: .patch, parameters: parameters, encoding: encoding, headers: self.headers).rxCompletable() }
+        Completable.deferred { [unowned self] in
+            self.request(path, method: .patch, parameters: parameters, encoding: encoding).rxCompletable(self.logger)
+        }
     }
 
     private func jsonValueRequest<T: Decodable>(_ path: String, _ method: HTTPMethod, _ body: Encodable? = nil) -> Single<T> {
         body.asRxData(encoder).flatMap { [unowned self] data in
             let request = self.createJsonBodyRequest(path: path, method: method, data: data)
-            return self.manager.request(request).rxValue()
+            self.logger?.logRequest(request)
+            return self.manager.request(request).rxValue(self.logger)
         }
     }
 
     private func jsonValueRequest<T: RxAlamoResult<Z>, Z: Decodable>(_ path: String, _ method: HTTPMethod, _ body: Encodable? = nil) -> Single<RxAlamoResult<Z>> {
         body.asRxData(encoder).flatMap { [unowned self] data in
             let request = self.createJsonBodyRequest(path: path, method: method, data: data)
-            return self.manager.request(request).rxResult()
+            self.logger?.logRequest(request)
+            return self.manager.request(request).rxResult(self.logger)
         }
     }
 
     private func jsonCompletableRequest(_ path: String, _ method: HTTPMethod, _ body: Encodable? = nil) -> Completable {
         body.asRxData(encoder).flatMapCompletable { [unowned self] data in
             let request = self.createJsonBodyRequest(path: path, method: method, data: data)
-            return self.manager.request(request).rxCompletable()
+            self.logger?.logRequest(request)
+            return self.manager.request(request).rxCompletable(self.logger)
         }
     }
 
@@ -134,16 +163,35 @@ public class RxAlamoCodable {
         request.httpMethod = method.rawValue
         request.httpBody = data
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        self.headers?.forEach { request.addValue($0.key, forHTTPHeaderField: $0.value) }
+        self.headers?.forEach {
+            request.addValue($0.key, forHTTPHeaderField: $0.value)
+        }
         return request
+    }
+
+    private func request(
+        _ path: String,
+        method: HTTPMethod,
+        parameters: Parameters? = nil,
+        encoding: ParameterEncoding = URLEncoding.default)
+            -> DataRequest {
+        let request = self.manager.request(self.createUrl(path), method: method, parameters: parameters, encoding: encoding, headers: self.headers)
+        if let request = request.request {
+            logger?.logRequest(request)
+        }
+        return request;
     }
 }
 
 extension DataRequest {
-    func rxValue<T: Decodable>() -> Single<T> {
+    func rxValue<T: Decodable>(_ logger: RxAlamoCodableLogger?) -> Single<T> {
         Single<T>.create { [weak self] observer in
             self!.responseJSON { response in
-                if let _ = response.error {
+                if let httpResponse = response.response {
+                    logger?.logResponse(response.request!, httpResponse, response.timeline, response.data)
+                }
+                if let error = response.error {
+                    logger?.logError(error)
                     observer(.error(RxAlamoCodableError.networkError))
                 } else if let http = response.response, http.statusCode >= 400 {
                     observer(.error(RxAlamoCodableError.httpError(code: http.statusCode, data: response.data)))
@@ -164,10 +212,14 @@ extension DataRequest {
         }
     }
 
-    func rxResult<T: RxAlamoResult<Z>, Z: Decodable>() -> Single<RxAlamoResult<Z>> {
+    func rxResult<T: RxAlamoResult<Z>, Z: Decodable>(_ logger: RxAlamoCodableLogger?) -> Single<RxAlamoResult<Z>> {
         Single<RxAlamoResult<Z>>.create { [weak self] observer in
             self!.responseJSON { response in
-                if let _ = response.error {
+                if let httpResponse = response.response {
+                    logger?.logResponse(response.request!, httpResponse, response.timeline, response.data)
+                }
+                if let error = response.error {
+                    logger?.logError(error)
                     observer(.error(RxAlamoCodableError.networkError))
                 } else if let http = response.response, http.statusCode >= 400 {
                     observer(.error(RxAlamoCodableError.httpError(code: http.statusCode, data: response.data)))
@@ -188,10 +240,14 @@ extension DataRequest {
         }
     }
 
-    func rxCompletable() -> Completable {
+    func rxCompletable(_ logger: RxAlamoCodableLogger?) -> Completable {
         Completable.create { [weak self] observer in
             self!.response { response in
-                if let _ = response.error {
+                if let httpResponse = response.response {
+                    logger?.logResponse(response.request!, httpResponse, response.timeline, response.data)
+                }
+                if let error = response.error {
+                    logger?.logError(error)
                     observer(.error(RxAlamoCodableError.networkError))
                 } else if let http = response.response, http.statusCode >= 400 {
                     observer(.error(RxAlamoCodableError.httpError(code: http.statusCode, data: response.data)))

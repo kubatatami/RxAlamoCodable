@@ -27,7 +27,10 @@ public class RxAlamoCodableAuth {
     }
 }
 
-extension Single {
+class T : Decodable {}
+
+extension Single where Element == RxAlamoResult<T> {
+    
     public func auth(_ auth: RxAlamoCodableAuth) -> PrimitiveSequence<Trait, Element> {
         self.retryWhen { observable in
             observable.flatMap { error -> Observable<Void> in

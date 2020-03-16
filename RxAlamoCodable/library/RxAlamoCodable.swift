@@ -266,7 +266,14 @@ public enum RxAlamoCodableError: Error {
     case httpError(code: Int, data: Data?)
     case networkError
     case parseError(error: Error, data: Data)
-    case emptyResponse
+    case emptyResponse;
+
+    public func tryParseBody<T: Decodable>(type: T.Type = T.self) -> T? {
+        if case let RxAlamoCodableError.httpError(_, data) = self, let strongData = data {
+            return try? JSONDecoder().decode(T.self, from: strongData)
+        }
+        return nil
+    }
 }
 
 extension Encodable {

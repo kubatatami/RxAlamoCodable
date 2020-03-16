@@ -25,7 +25,7 @@ public class DefaultRxAlamoCodableLogger: RxAlamoCodableLogger {
     }
 
     public func logRequest(_ request: URLRequest) {
-        print("--> \(request.httpMethod!) /\(request.url!.absoluteString) (\(request.httpBody?.count ?? 0)-byte body)")
+        print("--> \(request.httpMethod!) \(request.url!.absoluteString) (\(request.httpBody?.count ?? 0)-byte body)")
         if logHeaders || logBody {
             if logHeaders {
                 request.allHTTPHeaderFields?.forEach { key, value in
@@ -45,7 +45,7 @@ public class DefaultRxAlamoCodableLogger: RxAlamoCodableLogger {
     }
 
     public func logResponse(_ request: URLRequest, _ response: HTTPURLResponse, _ timeline: Timeline, _ data: Data?) {
-        print("<-- \(response.statusCode) \(HTTPURLResponse.localizedString(forStatusCode: response.statusCode)) (\(Int(timeline.requestDuration * 1000))ms) \(request.httpMethod!) /\(request.url!.absoluteString)")
+        print("<-- \(response.statusCode) \(HTTPURLResponse.localizedString(forStatusCode: response.statusCode)) (\(Int(timeline.requestDuration * 1000))ms) \(request.httpMethod!) \(request.url!.absoluteString)")
         if logHeaders || logBody {
             if logHeaders {
                 response.allHeaderFields.forEach { key, value in

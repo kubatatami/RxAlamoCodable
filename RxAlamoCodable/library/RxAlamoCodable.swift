@@ -164,7 +164,7 @@ public class RxAlamoCodable {
         request.httpBody = data
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         self.headers?.forEach {
-            request.addValue($0.key, forHTTPHeaderField: $0.value)
+            request.addValue($0.value, forHTTPHeaderField: $0.key)
         }
         return request
     }

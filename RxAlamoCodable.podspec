@@ -16,10 +16,10 @@ Pod::Spec.new do |spec|
   #
 
   spec.name         = "RxAlamoCodable"
-  spec.version      = "0.2.5-swift4"
+  spec.version      = "0.2.6"
   spec.summary      = "RxSwift + Alamofire + Codable"
 
-  spec.swift_version = "4.2"
+  spec.swift_version = "5.0"
 
   # This description is used to generate tags and improve search results.
   #   * Think: What does it do? Why did you write it? What is the focus?
@@ -132,6 +132,6 @@ Pod::Spec.new do |spec|
   # spec.requires_arc = true
 
   # spec.xcconfig = { "HEADER_SEARCH_PATHS" => "$(SDKROOT)/usr/include/libxml2" }
-  spec.dependency "RxSwift", "~> 4.5.0"
+  spec.dependency "RxSwift", "~> 5.1.1"
   spec.dependency "Alamofire", "~> 4.8.0"
 end

@@ -6,6 +6,6 @@ target 'RxAlamoCodable' do
   use_frameworks!
 
   # Pods for RxAlamoCodable
-  pod 'RxSwift', '~> 5.0.0'
-  pod 'Alamofire', '~> 5.0.0-beta.5'
+  pod 'RxSwift', '~> 5.1.1'
+  pod 'Alamofire', '~> 4.8.0'
 end

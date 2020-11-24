@@ -22,7 +22,7 @@ class ViewController: UIViewController {
         }).disposed(by: disposeBag)
 
         api.todoFullResponse().subscribe(onSuccess: { response in
-            print(response.response.response?.allHeaderFields)
+            print(response.response.response?.allHeaderFields as Any)
             print(response.data)
         }).disposed(by: disposeBag)
 
@@ -44,6 +44,8 @@ class ViewController: UIViewController {
         formApi.example(parameter1: "wewecwe", parameter2: 1234)
             .subscribe(onSuccess: { response in
                 print(response.message)
+            }, onError: { error in
+                print("formApi error: \(error.localizedDescription)")
             }).disposed(by: disposeBag)
     }
 }
